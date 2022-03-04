@@ -1,0 +1,6 @@
+let variable = msg.payload;
+
+variable= payload.data.type;
+
+msg.payload= variable
+return msg;
