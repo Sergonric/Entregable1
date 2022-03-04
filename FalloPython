@@ -1,0 +1,24 @@
+import requests
+import json
+TOKEN = "c3823f6c24b76426039855c02b722041c232b6ff8d7c420850a32ace0e4fab90"
+url = 'https://www.esios.ree.es/es/analisis/10229?vis=1&start_date=04-03-2022T00%3A00&end_date=04-03-2022T23%3A00&compare_start_date=04-03-0202T00%3A00&groupby=hour'
+headers = { "Accept: application/json; application/vnd.esios-api-v1+json","Content-Type: application/json","Host: api.esios.ree.es", "Authorization:" "Token token=\"c3823f6c24b76426039855c02b722041c232b6ff8d7c420850a32ace0e4fab90\"","Cookie: "}
+response = requests.get(url, headers=headers)
+#print(response)
+if response.status_code == 200:
+    json_data = json.loads(response.text)
+    valores = json_data['Potencia']['values']
+    precios = [x['value'] for x in valores]
+    
+    hora = 0
+    for precio in precios:
+        print("%s horas - %s €" %(str(hora).zfill(2), str(round(precio/1000, 4))))
+        hora += 1
+    
+        valor_min = min(precios)
+        valor_max = max(precios)
+        valor_med = round(statistics.mean(precios),2)
+  
+   # print("Precio mínimo: %s" % str(valor_min/1000))
+   # print("Precio máximo: %s" % str(valor_max/1000))
+   # print("Precio medio: %s" % str(valor_med/1000))
